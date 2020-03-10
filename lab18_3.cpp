@@ -8,7 +8,11 @@
 using namespace std;
 
 struct student{
-	//Define struct student with four member (name ,id , gender, gpa);
+	//Define struct student with fours member (name ,id , gender, gpa);
+	string name;
+	int id;
+	string gender;
+	float gpa;
 };
 
 struct course{
@@ -56,13 +60,12 @@ int main(){
 	
 	while(getline(student_file,textline)){
 		student s; 
-	
 		//Assign value to the members of struct s;
-	
+		sscanf(textline.c_str(),"%s,%d,%s,%f",&s.name,&s.id,&s.gender,&s.gpa);
 		allstudents.push_back(s); 		
 	}
 	
-	int state = 1;
+	/*int state = 1;
 	while(getline(course_file,textline)){
 		if(state == 1){
 			course c;
@@ -76,17 +79,21 @@ int main(){
 			if(textline == "> Students"){
 				state = 3;
 			}else{
-				//Append lecture_list;
+				//Append allcourses[ตัวล่าสุด].lecture_list;
 			}			
 		}else{
 			if(textline == "---------------------------------------"){
 				state = 1;
 			}else{
 				student *p = findstudent(allstudents,atof(textline.c_str()));
-				//Append student_list;
+				//Append p ไปที่ allcourses[ตัวล่าสุด].student_list;
 			}
 		}
 	}
-	printreport(allcourses);
+	printreport(allcourses);*/
+	for(int i=0;i<allstudents.size();i++){
+		cout << allstudents[i].name << " " << allstudents[i].id << " " << allstudents[i].gender << " " << allstudents[i].gpa << endl;
+		cout << i << "\n";
+	}
 	
 }
