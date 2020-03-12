@@ -4,6 +4,9 @@
 #include<vector>
 #include<cstdlib>
 #include<iomanip>
+#include<cstring>
+#include<stdio.h>
+#include<cstdio>
 
 using namespace std;
 
@@ -12,7 +15,7 @@ struct student{
 	string name;
 	int id;
 	string gender;
-	float gpa;
+	double gpa;
 };
 
 struct course{
@@ -57,15 +60,26 @@ int main(){
 	vector<course> allcourses;
 	
 	string textline;
-	
 	while(getline(student_file,textline)){
-		student s; 
+		student s;
+		string gender;
+		string name; 
+		double gpa;
+		int idx,id;
 		//Assign value to the members of struct s;
-		sscanf(textline.c_str(),"%s,%d,%s,%f",&s.name,&s.id,&s.gender,&s.gpa);
-		allstudents.push_back(s); 		
+		//char format1[] = "%[^,] %d,%s,%f";
+		//sscanf(textline.c_str(),format1,name,id,gender,gpa);
+		idx = textline.find_first_of(",");
+		name = textline.substr(0,idx);
+		id = atoi(textline.substr(idx+1,4).c_str());
+		gender  = textline.substr(idx+6,1);
+		gpa = atof(textline.substr(idx+8,4).c_str());
+		s = {name,id,gender,gpa};
+		allstudents.push_back(s); 
+				
 	}
 	
-	/*int state = 1;
+	int state = 1;
 	while(getline(course_file,textline)){
 		if(state == 1){
 			course c;
@@ -80,6 +94,10 @@ int main(){
 				state = 3;
 			}else{
 				//Append allcourses[ตัวล่าสุด].lecture_list;
+				course c;
+				getline(course_file,textline);
+				c.lecture_list.push_back(textline);
+				allcourses.push_back(c);
 			}			
 		}else{
 			if(textline == "---------------------------------------"){
@@ -87,13 +105,19 @@ int main(){
 			}else{
 				student *p = findstudent(allstudents,atof(textline.c_str()));
 				//Append p ไปที่ allcourses[ตัวล่าสุด].student_list;
+				course c;
+				getline(course_file,textline);
+				c.student_list.push_back(&*p);
+				allcourses.push_back(c);
 			}
+
 		}
 	}
-	printreport(allcourses);*/
-	for(int i=0;i<allstudents.size();i++){
-		cout << allstudents[i].name << " " << allstudents[i].id << " " << allstudents[i].gender << " " << allstudents[i].gpa << endl;
-		cout << i << "\n";
+	printreport(allcourses);
+	for(unsigned int i=0;i<allstudents.size();++i){
+		cout << allstudents[i].gpa << endl;
 	}
-	
+	student_file.close();
+	course_file.close();
+	return 0;
 }
