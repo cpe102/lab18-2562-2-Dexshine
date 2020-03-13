@@ -4,10 +4,6 @@
 #include<vector>
 #include<cstdlib>
 #include<iomanip>
-#include<cstring>
-#include<stdio.h>
-#include<cstdio>
-
 using namespace std;
 
 struct student{
@@ -43,7 +39,7 @@ void printreport(vector<course> allcourses){
 		cout << "\n\nStudents:\t";
 		for(unsigned int j = 0; j < allcourses[i].student_list.size();j++){
 			if(j != 0) cout << "\t\t";
-			cout << setw(15) << left << allcourses[i].student_list[j]->name << "\t";
+			cout << setw(16) << left << allcourses[i].student_list[j]->name << "\t";
 			cout << allcourses[i].student_list[j]->id << "\t";
 			cout << allcourses[i].student_list[j]->gender << "\t";
 			cout << allcourses[i].student_list[j]->gpa << "\n";
@@ -78,7 +74,7 @@ int main(){
 		allstudents.push_back(s); 
 				
 	}
-	
+	int i = 0,j=0;
 	int state = 1;
 	while(getline(course_file,textline)){
 		if(state == 1){
@@ -94,29 +90,22 @@ int main(){
 				state = 3;
 			}else{
 				//Append allcourses[ตัวล่าสุด].lecture_list;
-				course c;
-				getline(course_file,textline);
-				c.lecture_list.push_back(textline);
-				allcourses.push_back(c);
+				allcourses[i].lecture_list.push_back(textline.c_str());
 			}			
 		}else{
 			if(textline == "---------------------------------------"){
+				++i;
 				state = 1;
 			}else{
-				student *p = findstudent(allstudents,atof(textline.c_str()));
+				student *p = findstudent(allstudents,atoi(textline.c_str())); //*p = &allstudents[i]
 				//Append p ไปที่ allcourses[ตัวล่าสุด].student_list;
-				course c;
-				getline(course_file,textline);
-				c.student_list.push_back(&*p);
-				allcourses.push_back(c);
+				student *x = p;
+				allcourses[i].student_list.push_back(x);
 			}
 
 		}
 	}
 	printreport(allcourses);
-	for(unsigned int i=0;i<allstudents.size();++i){
-		cout << allstudents[i].gpa << endl;
-	}
 	student_file.close();
 	course_file.close();
 	return 0;
